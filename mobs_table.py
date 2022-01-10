@@ -3,16 +3,20 @@ import global_variables
 
 
 class Choice:
-    def __init__(self, text, end_text, affect_on_karma, items_required=()):
+    def __init__(self, text, end_text, affect_on_karma, items_required=(), items_acquired=(), is_fighting=False):
         self.text = text
         self.end_text = end_text
         self.karma = affect_on_karma
         self.items_required = items_required
+        self.items_acquired = items_acquired
+        self.is_fighting = is_fighting
 
     def perform_choice(self):
         try:
             for item in self.items_required:
                 global_variables.inventory.remove(item)
+            for item in self.items_acquired:
+                global_variables.inventory.append(item)
             global_variables.karma += self.karma
         except:
             return None
@@ -49,9 +53,62 @@ spider_choices = [
 spider = Mob('Пред Вами предстал ПАУК. Он просит у Вас ЖУКА. Что будете делать?',
              pygame.image.load('data/textures/spider.png'), spider_choices)
 
+beetle_choices = [
+    Choice('Дать ЖУКУ ФРУКТ (необходим ФРУКТ)',
+           "ЖУК благодарит Вас и присоединяется к Вам.",
+           20,
+           ("ФРУКТ",),
+           ("ЖУК",)),
+    Choice("Не давать ФРУКТ",
+           "ЖУК выглядит печально.",
+           -10)
+]
+beetle = Mob('Вы повстречали ЖУКА. Кажется, он хочет ФРУКТ.',
+             pygame.image.load('data/textures/beetle.png'), beetle_choices)
+
+well_choices = [
+    Choice('Взять ведро ВОДЫ',
+           "Вы получили ведро воды",
+           0,
+           items_acquired=("ВОДА",)),
+    Choice("Не брать ведро ВОДЫ",
+           "Вы молча уходите",
+           0)
+]
+well = Mob("Вы наткунлись на колодец. Что сделаете?",
+           pygame.image.load('data/textures/well.png'), well_choices)
+
+tree_choices = [
+    Choice("Полить дерево (необходима ВОДА)",
+           "Внезапно дерево начало цвести и плодоносить.\n Вы забираете его ФРУКТ.",
+           10,
+           ('ВОДА',),
+           ("ФРУКТ",)),
+    Choice("Ничего не делать",
+           "Вы молча уходите.",
+           0)
+]
+tree = Mob('Вы увидели ДЕРЕВО. Что будуте делать?',
+           pygame.image.load('data/textures/tree.png'), tree_choices)
+
+thirsty_man_choices = [
+    Choice('Дать ВОДЫ (необходима ВОДА)',
+           "Он благодарит Вас и даёт Вам ЗОЛОТО",
+           30,
+           ("ВОДА",),
+           ("ЗОЛОТО",)),
+    Choice("Не давать ВОДЫ",
+           "Человек проклинает Вас",
+           -10)
+]
+thirsty_man = Mob('Вы повстречали человека, что невероятно желает ВОДЫ.\n'
+                  'Что будете делать?',
+                  pygame.image.load('data/textures/human.png'), thirsty_man_choices)
+
 '''
 print(spider.text)
 for choice in enumerate(spider.choice_list):
     print(choice[0] + 1, choice[1].text)
 choice = int(input())
 print(spider.choice_list[choice - 1].end_text)'''
+mobs = [spider, beetle, well, tree, thirsty_man]

@@ -25,8 +25,9 @@ def display_central_text(screen, text):
     pygame.draw.rect(screen, pygame.Color(100, 255, 100),
                      pygame.Rect((5, h // 2 + h // 20 + 10), (w - 10, h // 10)), 2)
     font = pygame.font.Font(None, 30)
-    text = font.render(text, True, pygame.Color(100, 128, 100))
-    screen.blit(text, (10, h // 2 + h // 20 + 20))
+    for i, line in enumerate(text.split('\n')):
+        text = font.render(line, True, pygame.Color(100, 128, 100))
+        screen.blit(text, (10, h // 2 + h // 20 + 20 + i * font.get_height() + 5))
 
 
 def render_options_list(screen, options):

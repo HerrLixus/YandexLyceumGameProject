@@ -1,5 +1,6 @@
 import global_variables
 import pygame
+import math
 
 current_mob = None
 w, h = global_variables.size
@@ -61,10 +62,31 @@ def update_screen(screen):
         text = central_text[:symbol_counter]
         frame_counter = 0
 
-    screen.fill(pygame.Color('black'))
     draw_light_beam(screen)
     render_mob(screen, current_mob)
     display_central_text(screen, text)
     if symbol_counter > len(central_text):
         render_options_list(screen, current_mob.choice_list)
+    pygame.display.flip()
+
+
+"""Title screen stuff"""
+title_frame_counter = 0
+text_alpha = 1
+
+
+def render_title_screen(screen):
+    global title_frame_counter
+    global text_alpha
+    title_frame_counter += 1
+    color = pygame.Color(100, 255, 100)
+    if title_frame_counter == 5:
+        text_alpha += 1
+        title_frame_counter = 0
+
+    font = pygame.font.Font(None, 70)
+    text_img = font.render('IN THE DUNGEON', True, color)
+    text_img = pygame.transform.scale(text_img, (w, text_img.get_height() * w // text_img.get_width()))
+    text_img.set_alpha(text_alpha)
+    screen.blit(text_img, (w // 2 - text_img.get_width() // 2, h // 2 - text_img.get_height() // 2))
     pygame.display.flip()

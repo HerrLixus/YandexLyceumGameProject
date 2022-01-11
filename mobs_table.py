@@ -99,11 +99,18 @@ thirsty_man_choices = [
            ("ЗОЛОТО",)),
     Choice("Не давать ВОДЫ",
            "Человек проклинает Вас",
-           -10)
+           -10, is_fighting=True)
 ]
 thirsty_man = Mob('Вы повстречали человека, что невероятно желает ВОДЫ.\n'
                   'Что будете делать?',
-                  pygame.image.load('data/textures/human.png'), thirsty_man_choices)
+                  pygame.image.load('data/textures/human.png'), thirsty_man_choices, atk=9999)
+
+
+dead_choices = [
+    Choice('Начать заново',
+           "Вы отказываетесь идти у смерти на поводу\nи просыпаетесь в начале своего пути.", 0)
+]
+death_screen = Mob("Вы умерли", empty.texture, dead_choices)
 
 '''
 print(spider.text)

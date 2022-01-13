@@ -13,7 +13,7 @@ def restart():
     global_variables.atk = 1
     global_variables.karma = 0
     global_variables.is_dead = False
-    summon_mob(random.choice(mobs_table.mobs))
+    spawn_new_mob()
 
 
 def get_current_choice():
@@ -21,6 +21,12 @@ def get_current_choice():
         if rect.collidepoint(pygame.mouse.get_pos()):
             return current_mob.choice_list[i]
     return None
+
+
+def update_atk():
+    weapons = {"МЕЧ": 5, "СУПЕР МЕЧ": 10, "ДЕМОНИЧЕСКИЙ МЕЧ": 100}
+    global_variables.atk = sum([weapons[item] for item in global_variables.inventory
+                                if item in weapons]) + 1
 
 
 def process_click():
@@ -34,13 +40,14 @@ def process_click():
             if global_variables.atk < current_mob.atk:
                 die()
                 return
+        update_atk()
         result = current_option.perform_choice()
         if result is not None:
             close_mob(result)
     elif global_variables.is_dead:
         restart()
     elif current_mob == mobs_table.empty:
-        summon_mob(random.choice(mobs_table.mobs))
+        spawn_new_mob()
 
 
 def close_mob(result):
@@ -71,6 +78,14 @@ def die():
     global_variables.is_dead = True
 
 
+def find_possible_mobs():
+    return [mob for mob in mobs_table.mobs if mob.can_spawn()]
+
+
+def spawn_new_mob():
+    summon_mob(random.choice(find_possible_mobs()))
+
+
 if __name__ == '__main__':
     time = 0
     screen = pygame.display.set_mode(global_variables.size)
@@ -79,7 +94,7 @@ if __name__ == '__main__':
     in_title_screen = True
     current_mob = None
 
-    summon_mob(random.choice(mobs_table.mobs))
+    spawn_new_mob()
 
     while running:
         for event in pygame.event.get():

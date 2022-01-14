@@ -83,12 +83,12 @@ well_choices = [
            "Вы молча уходите",
            0)
 ]
-well = Mob("Вы наткунлись на колодец. Что сделаете?",
+well = Mob("Вы наткнулись на колодец. Что сделаете?",
            pygame.image.load('data/textures/well.png'), well_choices)
 
 tree_choices = [
     Choice("Полить дерево (необходима ВОДА)",
-           "Внезапно дерево начало цвести и плодоносить.\n Вы забираете его ФРУКТ.",
+           "Внезапно дерево начало цвести и плодоносить.\nВы забираете его ФРУКТ.",
            10,
            ('ВОДА',),
            ("ФРУКТ",)),
@@ -126,9 +126,31 @@ trader_choices = [
     Choice("Купить ЖУКА (необходимо ЗОЛОТО)",
            "Вы приобрели ЖУКА", 0,
            ("ЗОЛОТО",), ("ЖУК",)),
+    Choice("Уйти", "Вы молча уходите", 0)
 ]
 trader = Mob('Вы замечаете торговца', pygame.image.load('data/textures/trader.png'),
              trader_choices, karma_required=30)
+
+demon_choices = [
+    Choice("Отдать ДУШУ", "ДЕМОН отпсукает Вас", 0, ("ДУША",)),
+    Choice("Умолять о пощаде", "Демон убивает Вас", 0),
+    Choice("Сразиться с Демоном", "Вы победили ДЕМОНА", 40,
+           items_acquired=("ДЕМОНИЧЕСКИЙ МЕЧ",), is_fighting=True)
+]
+demon = Mob('Пред Вами предстал ДЕМОН. Он хочет Вашу ДУШУ', pygame.image.load('data/textures/demon.png'),
+            demon_choices, karma_required=-100, atk=199)
+
+demonic_trader_choices = [
+    Choice("Купить ДЕМОНИЧЕСКИЙ МЕЧ (необходима ДУША)", "Вы купили ДЕМОНИЧЕСКИЙ МЕЧ", 0,
+           ("ДУША",), ("ДЕМОНИЧЕСКИЙ МЕЧ",)),
+    Choice("Продать ДЕМОНИЧЕСКИЙ МЕЧ (необходим ДЕМОНИЧЕСКИЙ МЕЧ)", "Вы продали ДЕМОНИЧЕСКИЙ МЕЧ", 0,
+           ("ДЕМОНИЧЕСКИЙ МЕЧ",), ("ДУША",)),
+    Choice("Купить ДУШУ (необходимо ЗОЛОТО)", "Вы купили ДУШУ", 0,
+           ("ЗОЛОТО",), ("ДУША",)),
+    Choice("Уйти", "Вы молча уходите", 0)
+]
+demonic_trader = Mob("Вы повстречали ДЕМОНА-ТОРГОВЦА", pygame.image.load('data/textures/demon_trader.png'),
+                     demonic_trader_choices, karma_required=-100)
 
 dead_choices = [
     Choice('Начать заново',
@@ -136,10 +158,17 @@ dead_choices = [
 ]
 death_screen = Mob("Вы умерли", empty.texture, dead_choices)
 
+
+dog_choices = [
+    Choice("Сразиться с собакой", "Вы убили собаку", -20),
+    Choice("Сбежать", "Вы убежали от собаки", 0)
+]
+dog = Mob("Вы наткнулись на ЗЛУЮ СОБАКУ. Что будете делать?", pygame.image.load('data/textures/dog.png'),
+          dog_choices, karma_required=-30)
 '''
 print(spider.text)
 for choice in enumerate(spider.choice_list):
     print(choice[0] + 1, choice[1].text)
 choice = int(input())
 print(spider.choice_list[choice - 1].end_text)'''
-mobs = [spider, beetle, well, tree, thirsty_man, trader]
+mobs = [spider, beetle, well, tree, thirsty_man, trader, demon, demonic_trader, dog]

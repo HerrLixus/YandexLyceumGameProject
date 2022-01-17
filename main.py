@@ -6,6 +6,7 @@ import mobs_table
 import global_variables
 
 pygame.init()
+pygame.font.init()
 pygame.mixer.music.set_volume(0.75)
 
 

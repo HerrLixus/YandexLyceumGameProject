@@ -1,6 +1,5 @@
 import global_variables
 import pygame
-import math
 
 current_mob = None
 w, h = global_variables.size
@@ -25,7 +24,7 @@ def render_mob(screen, mob):
 def display_central_text(screen, text):
     pygame.draw.rect(screen, pygame.Color(100, 255, 100),
                      pygame.Rect((5, h // 2 + h // 20 + 10), (w - 10, h // 10)), 2)
-    font = pygame.font.Font(None, 30)
+    font = pygame.font.SysFont('Sans', 20, bold=True)
     for i, line in enumerate(text.split('\n')):
         text = font.render(line, True, pygame.Color(100, 128, 100))
         screen.blit(text, (10, h // 2 + h // 20 + 20 + i * font.get_height() + 5))
@@ -47,9 +46,9 @@ def render_options_list(screen, options):
                          pygame.Rect(position,
                                      (w - 10, h // 20)), 2)
         global_variables.option_hitboxes.append(pygame.Rect(position, (w - 10, h // 20)))
-        font = pygame.font.Font(None, 30)
+        font = pygame.font.SysFont('Sans', 20, bold=True)
         text = font.render(choice.text, True, text_color)
-        screen.blit(text, (position[0] + 10, position[1] + 10))
+        screen.blit(text, (position[0] + 5, position[1] + 5))
 
 
 def update_screen(screen):
@@ -82,7 +81,7 @@ def render_title_screen(screen):
     global text_pos
     title_frame_counter += 1
     color = pygame.Color(100, 255, 100)
-    font = pygame.font.Font(None, 70)
+    font = pygame.font.SysFont('Sans', 70, bold=True)
     text_img = font.render('IN THE DUNGEON', True, color)
     text_img = pygame.transform.scale(text_img, (w, text_img.get_height() * w // text_img.get_width()))
 

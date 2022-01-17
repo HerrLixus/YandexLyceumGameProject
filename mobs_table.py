@@ -164,7 +164,7 @@ dog_choices = [
     Choice("Сбежать", "Вы убежали от собаки", 0)
 ]
 dog = Mob("Вы наткнулись на ЗЛУЮ СОБАКУ. Что будете делать?", pygame.image.load('data/textures/dog.png'),
-          dog_choices, karma_required=-30)
+          dog_choices, karma_required=-30, atk=9)
 '''
 print(spider.text)
 for choice in enumerate(spider.choice_list):

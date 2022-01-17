@@ -6,6 +6,7 @@ import mobs_table
 import global_variables
 
 pygame.init()
+pygame.mixer.music.set_volume(0.75)
 
 
 def restart():
@@ -32,6 +33,9 @@ def update_atk():
 def process_click():
     global in_title_screen
     if in_title_screen:
+        pygame.mixer.music.pause()
+        pygame.mixer.music.load('data/music/Kevin MacLeod - 8bit Dungeon Level.mp3')
+        pygame.mixer.music.play(-1)
         in_title_screen = False
     elif render.symbol_counter < len(render.central_text):
         render.symbol_counter = len(render.central_text)
@@ -52,8 +56,10 @@ def process_click():
 
 def close_mob(result):
     global current_mob
+    global previous_mob
     global current_option
 
+    previous_mob = current_mob
     current_mob = mobs_table.empty
     render.current_mob = current_mob
     render.symbol_counter = 0
@@ -79,7 +85,10 @@ def die():
 
 
 def find_possible_mobs():
-    return [mob for mob in mobs_table.mobs if mob.can_spawn()]
+    possibilities = [mob for mob in mobs_table.mobs if mob.can_spawn()]
+    if previous_mob in possibilities:
+        possibilities.remove(previous_mob)
+    return possibilities
 
 
 def spawn_new_mob():
@@ -92,7 +101,11 @@ if __name__ == '__main__':
     clock = pygame.time.Clock()
     running = True
     in_title_screen = True
+    previous_mob = None
     current_mob = None
+
+    pygame.mixer.music.load('data/music/Joshua McLean - Mountain Trials.mp3')
+    pygame.mixer.music.play(-1)
 
     spawn_new_mob()
 

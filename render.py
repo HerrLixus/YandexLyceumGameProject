@@ -73,20 +73,24 @@ def update_screen(screen):
 """Title screen stuff"""
 title_frame_counter = 0
 text_alpha = 1
+text_pos = -100
 
 
 def render_title_screen(screen):
     global title_frame_counter
     global text_alpha
+    global text_pos
     title_frame_counter += 1
     color = pygame.Color(100, 255, 100)
-    if title_frame_counter == 5:
-        text_alpha += 1
-        title_frame_counter = 0
-
     font = pygame.font.Font(None, 70)
     text_img = font.render('IN THE DUNGEON', True, color)
     text_img = pygame.transform.scale(text_img, (w, text_img.get_height() * w // text_img.get_width()))
+
+    if title_frame_counter == 5:
+        text_alpha += 1
+        text_pos += 10 if text_pos <= h // 2 - text_img.get_height() // 2 else 0
+        title_frame_counter = 0
+
     text_img.set_alpha(text_alpha)
-    screen.blit(text_img, (w // 2 - text_img.get_width() // 2, h // 2 - text_img.get_height() // 2))
+    screen.blit(text_img, (w // 2 - text_img.get_width() // 2, text_pos))
     pygame.display.flip()
